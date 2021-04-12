@@ -2,7 +2,7 @@ name: Generate scripts
 
 on:
   schedule:
-  - cron: "0 1 * * *"
+  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source_folder: 'lsio'
-        destination_repo: 'technorabilia/test-output'
+        destination_repo: 'technorabilia/docker-bits'
         destination_folder: 'lsio'
         user_email: 'simon@technorabilia.com'
         user_name: 'technorabilia'
