@@ -36,7 +36,7 @@ def get_project_vars(project_name):
 
     for row in project_vars["param_env_vars"]:
         if row["env_var"] == "TZ":
-            row["env_value"] = "Europe/Amsterdam"
+            row["env_value"] = "${TZ:-Europe/Amsterdam}"
             row["desc"] = "Specify a timezone to use for example Europe/Amsterdam"
 
     if project_vars["project_logo"] != "" and requests.get(project_vars["project_logo"]).status_code != 200:
@@ -80,6 +80,7 @@ with open("{}/docker-env.cfg".format(out_basedir), "w") as out_file:
     out_file.write('''#BASEDIR=/volume1/docker
 #PUID=1024
 #PGID=100
+#TZ=Europe/Amsterdam
 ''')
 
 for project in project_list:
