@@ -1,0 +1,135 @@
+{
+	"version": "2",
+	"templates": [
+{% for project in projects %}
+{% set project_vars = get_project_vars(project.name) %}
+{% if project_vars.project_name != "name" %}
+		{
+			"type": 1,
+			"title": "{{ project_vars.project_name | capitalize }}",
+			"name": "{{ project_vars.project_name | capitalize }}",
+			"note": "Portainer App Templates by <a href='https://www.technorabilia.com' target='_blank'>Technorabilia</a> based on data provided by <a href='https://www.linuxserver.io' target='_blank'>LinuxServer.io</a>.</p><p>Don't forget to create the volume directories on the host file system.</p>{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}<p>{% endif %}{% if project_vars.param_usage_include_vols %}{% for item in project_vars.param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}{% endfor %}{% endif %}{% if project_vars.opt_param_usage_include_vols %}{% for item in project_vars.opt_param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{{ "<br>" if not loop.last else "" }}{% endfor %}{% endif %}{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}</p>{% endif %}",
+{#
+{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
+<p>
+{% endif %}
+{% if project_vars.param_usage_include_vols %}
+{% for item in project_vars.param_volumes %}
+mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+{{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_vols %}
+{% for item in project_vars.opt_param_volumes %}
+mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+{{ "<br>" if not loop.last else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
+</p>
+{% endif %}	
+",
+#}
+			"description": "{{ project_vars.project_blurb | replace('\n', '') | replace('"', "'") }}",
+			"platform": "linux",
+			"logo": "{{ project_vars.project_logo }}",
+			"image": "{{ project_vars.lsio_project_name_short }}/{{ project_vars.project_name }}:latest",
+{% if project_vars.privileged is sameas true %}
+			"privileged": true,
+{% elif project_vars.privileged == 'optional' %}
+			"privileged": true,
+{% endif %}
+{% if project_vars.param_usage_include_net is sameas true %}
+			"network": "{{ project_vars.param_net }}",
+{% elif project_vars.param_usage_include_net == 'optional' %}
+			"network": "{{ project_vars.param_net }}",
+{% endif %}
+{% if project_vars.common_param_env_vars_enabled or project_vars.param_usage_include_env or project_vars.opt_param_usage_include_env %}
+			"env": [
+{% endif %}
+{% if project_vars.common_param_env_vars_enabled is sameas true %}
+{% for item in project_vars.common_param_env_vars %}
+				{
+					"name": "{{ item.env_var }}",
+					"label": "{{ item.env_var }}",
+					"default": "{{ item.env_value | replace('"', "'") }}",
+					"description": "{{ item.desc | replace('"', "'") }}"
+				}{{ "," if not loop.last or project_vars.param_usage_include_env or project_vars.opt_param_usage_include_env else "" }}
+{% endfor %}
+{% elif project_vars.common_param_env_vars_enabled == 'optional' %}
+{% for item in project_vars.common_param_env_vars %}
+				{
+					"name": "{{ item.env_var }}",
+					"label": "{{ item.env_var }}",
+					"default": "{{ item.env_value | replace('"', "'") }}",
+					"description": "{{ item.desc | replace('"', "'") }}"
+				}{{ "," if not loop.last or project_vars.param_usage_include_env  or project_vars.opt_param_usage_include_env else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_env %}
+{% for item in project_vars.param_env_vars %}
+				{
+					"name": "{{ item.env_var }}",
+					"label": "{{ item.env_var }}",
+					"default": "{{ item.env_value | replace('"', "'") }}",
+					"description": "{{ item.desc | replace('"', "'") }}"
+				}{{ "," if not loop.last or project_vars.opt_param_usage_include_env else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_env %}
+{% for item in project_vars.opt_param_env_vars %}
+				{
+					"name": "{{ item.env_var }}",
+					"label": "{{ item.env_var }}",
+					"default": "{{ item.env_value | replace('"', "'") }}",
+					"description": "{{ item.desc | replace('"', "'") }}"
+				}{{ "," if not loop.last else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.common_param_env_vars_enabled or project_vars.param_usage_include_env or project_vars.opt_param_usage_include_env %}
+			],
+{% endif %}
+{% if project_vars.param_usage_include_ports or project_vars.opt_param_usage_include_ports %}
+			"ports": [
+{% endif %}
+{% if project_vars.param_usage_include_ports %}
+{% for item in project_vars.param_ports %}
+				"{{ item.external_port }}:{{ item.internal_port }}{% if item.internal_port | int != 0 %}/tcp{% endif %}"{{ "," if not loop.last or project_vars.opt_param_usage_include_ports else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_ports %}
+{% for item in project_vars.opt_param_ports %}
+				"{{ item.external_port }}:{{ item.internal_port }}{% if item.internal_port | int != 0 %}/tcp{% endif %}"{{ "," if not loop.last else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_ports or project_vars.opt_param_usage_include_ports %}
+			],
+{% endif %}
+{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
+			"volumes": [
+{% endif %}
+{% if project_vars.param_usage_include_vols %}
+{% for item in project_vars.param_volumes %}
+			{
+				"container": "{{ item.vol_path }}",
+				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+			}{{ "," if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_vols %}
+{% for item in project_vars.opt_param_volumes %}
+			{
+				"container": "{{ item.vol_path }}",
+				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+			}{{ "," if not loop.last else "" }}
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
+			],
+{% endif %}
+			"restart_policy": "unless-stopped"
+		}{{ "," if not loop.last else "" }}
+{% endif %}
+{% endfor %}
+	]
+}

@@ -1,0 +1,102 @@
+{{ project_vars.project_blurb }}
+source ./.env
+docker run -d \
+  --name={{ project_vars.param_container_name }} \
+{% if project_vars.param_usage_include_hostname is sameas true %}
+  --hostname={{ project_vars.param_hostname }} `# {{ project_vars.param_hostname_desc }}` \
+{% elif project_vars.param_usage_include_hostname == 'optional' %}
+    --hostname={{ project_vars.param_hostname }} `# optional` `# {{ project_vars.param_hostname_desc }}` \
+{% endif %}
+{% if project_vars.param_usage_include_net is sameas true %}
+  --net={{ project_vars.param_net }} `# {{ project_vars.param_net_desc }}` \
+{% elif project_vars.param_usage_include_net == 'optional' %}
+  --net={{ project_vars.param_net }} `# optional` `# {{ project_vars.param_net_desc }}` \
+{% endif %}
+{% if project_vars.privileged is sameas true %}
+  --privileged \
+{% elif project_vars.privileged == 'optional' %}
+  --privileged `# optional` \
+{% endif %}
+{% if project_vars.cap_add_param %}
+{% for item in project_vars.cap_add_param_vars %}
+  --cap-add={{ item.cap_add_var }} \
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_cap_add_param %}
+{% for item in project_vars.opt_cap_add_param_vars %}
+  --cap-add={{ item.cap_add_var }} `# optional` \
+{% endfor %}
+{% endif %}
+{% if project_vars.common_param_env_vars_enabled is sameas true %}
+{% for item in project_vars.common_param_env_vars %}
+  -e {{ item.env_var }}={{ item.env_value }} `# {{ item.desc }}` \
+{% endfor %}
+{% elif project_vars.common_param_env_vars_enabled == 'optional' %}
+{% for item in project_vars.common_param_env_vars %}
+  -e {{ item.env_var }}={{ item.env_value }} `# optional` `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_env %}
+{% for item in project_vars.param_env_vars %}
+  -e {{ item.env_var }}={{ item.env_value }} `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_env %}
+{% for item in project_vars.opt_param_env_vars %}
+  -e {{ item.env_var }}={{ item.env_value }} `# optional` `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_ports %}
+{% for item in project_vars.param_ports %}
+  -p {{ item.external_port }}:{{ item.internal_port }} `# {{ item.port_desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_ports %}
+{% for item in project_vars.opt_param_ports %}
+  -p {{ item.external_port }}:{{ item.internal_port }} `# optional` `# {{ item.port_desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.param_usage_include_vols %}
+{% for item in project_vars.param_volumes %}
+  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_usage_include_vols %}
+{% for item in project_vars.opt_param_volumes %}
+  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# optional` `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.param_device_map %}
+{% for item in project_vars.param_devices %}
+  --device {{ item.device_host_path }}:{{ item.device_path }} `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_param_device_map %}
+{% for item in project_vars.opt_param_devices %}
+  --device {{ item.device_host_path }}:{{ item.device_path }} `# optional` `# {{ item.desc }}` \
+{% endfor %}
+{% endif %}
+{% if project_vars.custom_params is defined %}
+{% for item in project_vars.custom_params %}
+{% if item.array is not defined %}
+  --{{ item.name }}="{{ item.value }}" \
+{% else %}
+{% for item2 in item.value %}
+  --{{ item.name }}="{{ item2 }}" \
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if project_vars.opt_custom_params is defined %}
+{% for item in project_vars.opt_custom_params %}
+{% if item.array is not defined %}
+  --{{ item.name }}="{{ item.value }}" `# optional` \
+{% else %}
+{% for item2 in item.value %}
+  --{{ item.name }}="{{ item2 }}" `# optional` \
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+  --restart unless-stopped \
+  ghcr.io/{{ project_vars.lsio_project_name_short }}/{{ project_vars.project_name }}
