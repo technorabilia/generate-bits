@@ -35,7 +35,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source_file: 'templates-2.0.json'
-        destination_repo: 'technorabilia/test-output'
+        destination_repo: 'technorabilia/portainer-templates'
         destination_folder: 'lsio/templates'
         user_email: 'simon@technorabilia.com'
         user_name: 'technorabilia'
