@@ -73,8 +73,13 @@ with open(out_filename, "w") as out_file:
 
 # check valid json
 with open(out_filename) as in_file:
-    json.load(in_file)
+    templates_v2 = json.load(in_file)
 
 # check filesize
 if os.path.getsize(out_filename) < 200000:
     raise Exception
+
+out_filename = "templates-1.20.0.json"
+templates_v1 = json.dumps(templates_v2["templates"], indent=4)
+with open(out_filename, "w") as out_file:
+    out_file.write(templates_v1)
