@@ -1,5 +1,5 @@
 ln -s ../docker-env.cfg ./.env
-source ./.env
+. ./.env
 {% if project_vars.param_usage_include_vols %}
 {% for item in project_vars.param_volumes %}
 mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}
