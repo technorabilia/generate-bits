@@ -29,7 +29,18 @@ jobs:
     - name: Execute Python script
       run: |
         python generate_templates.py
-    - name: Pushes output to destination repository
+    - name: Pushes templates-1.20.0.json to destination repository
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source_file: 'templates-1.20.0.json'
+        destination_repo: 'technorabilia/portainer-templates'
+        destination_folder: 'lsio/templates'
+        user_email: 'simon@technorabilia.com'
+        user_name: 'technorabilia'
+        commit_message: 'Workflow update'
+    - name: Pushes templates-2.0.json to destination repository
       uses: dmnemec/copy_file_to_another_repo_action@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -39,4 +50,4 @@ jobs:
         destination_folder: 'lsio/templates'
         user_email: 'simon@technorabilia.com'
         user_name: 'technorabilia'
-        commit_message: 'Workflow update'
+        commit_message: 'Workflow update'        
