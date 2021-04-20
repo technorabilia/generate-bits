@@ -35,7 +35,17 @@ def get_project_vars(project_name):
         "{{ project_name }}", project_vars["project_name"])
 
     project_vars["project_blurb"] = project_vars["project_blurb"].replace(
-        "[{{ project_name|capitalize }}]({{ project_url }})", project_vars["project_name"].capitalize())
+        "{{ project_name|capitalize }}", project_vars["project_name"].capitalize())
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "{{ project_name }}", project_vars["project_name"].capitalize())
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "{{ project_url }}", project_vars["project_url"])
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "\n", " ")
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        '"', "'")
+    project_vars["project_blurb"] = ' '.join(
+        project_vars["project_blurb"].split())
 
     lines = textwrap.wrap(
         project_vars["project_blurb"], 78, break_long_words=False)
@@ -75,7 +85,7 @@ resp = requests.get(vars_url)
 init_vars.update(yaml.load(resp.text, Loader=yaml.FullLoader))
 
 env = Environment(loader=FileSystemLoader(
-    "templates"), trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)  # ktn added
+    "templates"), trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
 env.globals.update(get_project_vars=get_project_vars)
 
 image_url = "https://fleet.linuxserver.io/api/v1/images"

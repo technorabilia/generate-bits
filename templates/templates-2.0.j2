@@ -30,7 +30,7 @@ mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
 {% endif %}	
 ",
 #}
-			"description": "{{ project_vars.project_blurb | replace('\n', '') | replace('"', "'") }}",
+			"description": "{{ project_vars.project_blurb }}",
 			"platform": "linux",
 			"logo": "{{ project_vars.project_logo }}",
 			"image": "{{ project_vars.lsio_project_name_short }}/{{ project_vars.project_name }}:latest",

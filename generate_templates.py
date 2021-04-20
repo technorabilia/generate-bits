@@ -32,7 +32,17 @@ def get_project_vars(project_name):
 
     # overrides
     project_vars["project_blurb"] = project_vars["project_blurb"].replace(
-        "[{{ project_name|capitalize }}]({{ project_url }})", project_vars["project_name"].capitalize())
+        "{{ project_name|capitalize }}", project_vars["project_name"].capitalize())
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "{{ project_name }}", project_vars["project_name"].capitalize())
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "{{ project_url }}", project_vars["project_url"])
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        "\n", " ")
+    project_vars["project_blurb"] = project_vars["project_blurb"].replace(
+        '"', "'")
+    project_vars["project_blurb"] = ' '.join(
+        project_vars["project_blurb"].split())
 
     for row in project_vars["common_param_env_vars"]:
         if row["env_var"] == "PGID":
