@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import json
-import yaml
+import os
+
 import requests
+import yaml
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -85,14 +86,13 @@ response = requests.get(image_url)
 response_json = response.json()
 project_list = response_json["data"]["repositories"]["linuxserver"]
 
+# # testing
+# project_list = list(
+#     filter(lambda project: project["name"] == "sonarr", project_list))
+
 projects = {
     "projects": project_list
 }
-
-# projects = {
-#     "projects": [
-#         {"name": "sonarr"},
-#     ]}
 
 out_filename = "templates-2.0.json"
 with open(out_filename, "w") as out_file:

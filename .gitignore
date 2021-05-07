@@ -1,0 +1,6 @@
+.vscode
+.github
+venv
+*.pyc
+*.db
+*.json

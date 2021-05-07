@@ -16,10 +16,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
-import yaml
-import requests
-from jinja2 import Environment, FileSystemLoader
 import textwrap
+
+import requests
+import yaml
+from jinja2 import Environment, FileSystemLoader
 
 
 def get_project_vars(project_name):
@@ -93,9 +94,9 @@ response = requests.get(image_url)
 response_json = response.json()
 project_list = response_json["data"]["repositories"]["linuxserver"]
 
-# project_list = [
-#     {"name": "sonarr"}
-# ]
+# # testing
+# project_list = list(
+#     filter(lambda project: project["name"] == "sonarr", project_list))
 
 projects = {
     "projects": project_list
