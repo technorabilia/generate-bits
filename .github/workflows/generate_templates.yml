@@ -1,6 +1,7 @@
 name: Generate templates
 
 on:
+  workflow_dispatch:
   schedule:
   - cron: "0 0 * * *"
 
@@ -50,4 +51,4 @@ jobs:
         destination_folder: 'lsio/templates'
         user_email: 'simon@technorabilia.com'
         user_name: 'technorabilia'
-        commit_message: 'Workflow update'        
+        commit_message: 'Workflow update'
