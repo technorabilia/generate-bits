@@ -113,10 +113,13 @@ with open("{}/docker-env.cfg".format(out_basedir), "w") as out_file:
 
 for project in project_list:
     print(project["name"])
-    out_dir = "{}/{}".format(out_basedir, project["name"])
-    os.makedirs(out_dir, exist_ok=True)
 
     project_vars = get_project_vars(project["name"])
+    if project_vars["project_name"] == "name":
+        continue
+
+    out_dir = "{}/{}".format(out_basedir, project["name"])
+    os.makedirs(out_dir, exist_ok=True)    
 
     template = env.get_template("docker-run.j2")
     with open("{}/docker-run.sh".format(out_dir), "w") as out_file:
