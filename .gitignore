@@ -1,5 +1,5 @@
 .vscode
-.github
+lsio
 venv
 *.pyc
 *.db
