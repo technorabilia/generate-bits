@@ -67,8 +67,8 @@ def get_project_vars(project_name):
             row["env_value"] = "${TZ:-Europe/Amsterdam}"
             row["desc"] = "Specify a timezone to use for example Europe/Amsterdam"
 
-    if project_vars["project_logo"] != "" and requests.get(project_vars["project_logo"]).status_code != 200:
-        project_vars["project_logo"] = ""
+    # if project_vars["project_logo"] != "" and requests.get(project_vars["project_logo"]).status_code != 200:
+    #     project_vars["project_logo"] = ""
 
     if "full_custom_readme" in project_vars.keys() and project_vars["full_custom_readme"] != "":
         project_vars["project_blurb"] = "This container needs special attention. Please check https://hub.docker.com/r/linuxserver/{} for details.".format(
@@ -119,7 +119,7 @@ for project in project_list:
         continue
 
     out_dir = "{}/{}".format(out_basedir, project["name"])
-    os.makedirs(out_dir, exist_ok=True)    
+    os.makedirs(out_dir, exist_ok=True)
 
     template = env.get_template("docker-run.j2")
     with open("{}/docker-run.sh".format(out_dir), "w") as out_file:
