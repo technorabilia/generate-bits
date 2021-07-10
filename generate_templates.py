@@ -58,8 +58,8 @@ def get_project_vars(project_name):
             row["env_value"] = "Europe/Amsterdam"
             row["desc"] = "Specify a timezone to use for example Europe/Amsterdam"
 
-    # if project_vars["project_logo"] != "" and requests.get(project_vars["project_logo"]).status_code != 200:
-    #     project_vars["project_logo"] = ""
+    if project_vars["project_logo"] == "http://www.logo.com/logo.png":
+        project_vars["project_logo"] = ""
 
     if "full_custom_readme" in project_vars.keys() and project_vars["full_custom_readme"] != "":
         project_vars["project_blurb"] = "This container needs special attention. Please check https://hub.docker.com/r/linuxserver/{} for details.".format(
