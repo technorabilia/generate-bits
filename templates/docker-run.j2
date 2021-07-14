@@ -1,3 +1,4 @@
+{% from "common.j2" import exc_param_volumes %}
 {{ project_vars.project_blurb }}
 source ./.env
 docker run -d \
@@ -58,12 +59,20 @@ docker run -d \
 {% endif %}
 {% if project_vars.param_usage_include_vols %}
 {% for item in project_vars.param_volumes %}
+{% if item.vol_path in exc_param_volumes %}
+  -v {{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
+{% else %}
   -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
+{% if item.vol_path in exc_param_volumes %}
+  -v {{ item.vol_path }}:{{ item.vol_path }} `# optional` `# {{ item.desc }}` \
+{% else %}
   -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# optional` `# {{ item.desc }}` \
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_device_map %}

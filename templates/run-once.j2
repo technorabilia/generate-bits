@@ -1,12 +1,17 @@
+{% from "common.j2" import exc_param_volumes %}
 ln -s ../docker-env.cfg ./.env
 . ./.env
 {% if project_vars.param_usage_include_vols %}
 {% for item in project_vars.param_volumes %}
+{% if item.vol_path not in exc_param_volumes %}
 mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
+{% if item.vol_path not in exc_param_volumes %}
 mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }} `#optional`
+{% endif %}
 {% endfor %}
 {% endif %}

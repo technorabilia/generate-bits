@@ -1,3 +1,4 @@
+{% from "common.j2" import exc_param_volumes %}
 {{ project_vars.project_blurb }}
 {% if not project_vars.custom_compose is defined %}---
 version: "2.1"
@@ -66,14 +67,24 @@ services:
 {% endif %}
 {% if project_vars.param_usage_include_vols %}
 {% for item in project_vars.param_volumes %}
+{% if item.vol_path in exc_param_volumes %}
+      # {{ item.desc }}
+      - {{ item.vol_path }}:{{ item.vol_path }}
+{% else %}
       # {{ item.desc }}
       - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
+{% if item.vol_path in exc_param_volumes %}
+      # {{ item.desc }}
+      - {{ item.vol_path }}:{{ item.vol_path }} # optional
+{% else %}
       # {{ item.desc }}
       - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} # optional
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_ports or project_vars.opt_param_usage_include_ports %}

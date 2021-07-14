@@ -1,3 +1,4 @@
+{% from "common.j2" import exc_param_volumes %}
 {
 	"version": "2",
 	"templates": [
@@ -8,26 +9,30 @@
 			"type": 1,
 			"title": "{{ project_vars.project_name | capitalize }}",
 			"name": "{{ project_vars.project_name | capitalize }}",
-			"note": "Portainer App Templates by <a href='https://www.technorabilia.com' target='_blank'>Technorabilia</a> based on data provided by <a href='https://www.linuxserver.io' target='_blank'>LinuxServer.io</a>.</p><p>Don't forget to create the volume directories on the host file system.</p>{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}<p>{% endif %}{% if project_vars.param_usage_include_vols %}{% for item in project_vars.param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}{% endfor %}{% endif %}{% if project_vars.opt_param_usage_include_vols %}{% for item in project_vars.opt_param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{{ "<br>" if not loop.last else "" }}{% endfor %}{% endif %}{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}</p>{% endif %}",
+			"note": "Portainer App Templates by <a href='https://www.technorabilia.com' target='_blank'>Technorabilia</a> based on data provided by <a href='https://www.linuxserver.io' target='_blank'>LinuxServer.io</a>.</p><p>Don't forget to create the volume directories on the host file system.</p>{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}<p>{% endif %}{% if project_vars.param_usage_include_vols %}{% for item in project_vars.param_volumes %}{% if item.vol_path not in exc_param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{% endif %}{{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}{% endfor %}{% endif %}{% if project_vars.opt_param_usage_include_vols %}{% for item in project_vars.opt_param_volumes %}{% if item.vol_path not in exc_param_volumes %}mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}{% endif %}{{ "<br>" if not loop.last else "" }}{% endfor %}{% endif %}{% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}</p>{% endif %}",
 {#
 {% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
 <p>
 {% endif %}
 {% if project_vars.param_usage_include_vols %}
 {% for item in project_vars.param_volumes %}
+{% if item.vol_path not in exc_param_volumes %}
 mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+{% endif %}
 {{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
 {% endfor %}
 {% endif %}
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
+{% if item.vol_path not in exc_param_volumes %}
 mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+{% endif %}
 {{ "<br>" if not loop.last else "" }}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
 </p>
-{% endif %}	
+{% endif %}
 ",
 #}
 			"description": "{{ project_vars.project_blurb }}",
@@ -117,7 +122,11 @@ mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
 {% for item in project_vars.param_volumes %}
 			{
 				"container": "{{ item.vol_path }}",
+{% if item.vol_path in exc_param_volumes %}
+				"bind": "{{ item.vol_path }}"
+{% else %}
 				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+{% endif %}
 			}{{ "," if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
 {% endfor %}
 {% endif %}
@@ -125,7 +134,11 @@ mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
 {% for item in project_vars.opt_param_volumes %}
 			{
 				"container": "{{ item.vol_path }}",
+{% if item.vol_path in exc_param_volumes  %}
+				"bind": "{{ item.vol_path }}"
+{% else %}
 				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+{% endif %}
 			}{{ "," if not loop.last else "" }}
 {% endfor %}
 {% endif %}
