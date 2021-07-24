@@ -98,6 +98,9 @@ project_list = response_json["data"]["repositories"]["linuxserver"]
 # project_list = list(
 #     filter(lambda project: project["name"] == "sonarr", project_list))
 
+project_list = list(
+    filter(lambda project: project["deprecated"] == False, project_list))
+
 projects = {
     "projects": project_list
 }
