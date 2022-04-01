@@ -57,10 +57,10 @@ def get_project_vars(project_name):
     for row in project_vars["common_param_env_vars"]:
         if row["env_var"] == "PGID":
             row["env_value"] = "${PGID:-100}"
-            row["desc"] = "for UserID"
+            row["desc"] = "for GroupID"
         if row["env_var"] == "PUID":
             row["env_value"] = "${PUID:-1024}"
-            row["desc"] = "for GroupID"
+            row["desc"] = "for UserID"
 
     for row in project_vars["param_env_vars"]:
         if row["env_var"] == "TZ":
