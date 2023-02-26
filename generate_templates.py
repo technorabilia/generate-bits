@@ -61,7 +61,6 @@ def get_project_vars(project_name):
     if len(project_vars["param_env_vars"]) == 0:
         project_vars["param_usage_include_env"] = False
 
-
     if project_vars["project_logo"] == "http://www.logo.com/logo.png":
         project_vars["project_logo"] = ""
 
