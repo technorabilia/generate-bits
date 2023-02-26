@@ -52,11 +52,15 @@ def get_project_vars(project_name):
         if row["env_var"] == "PUID":
             row["env_value"] = 1024
             row["desc"] = "for UserID"
+        if row["env_var"] == "TZ":
+            row["env_value"] = "Europe/Amsterdam"
 
     for row in project_vars["param_env_vars"]:
         if row["env_var"] == "TZ":
-            row["env_value"] = "Europe/Amsterdam"
-            row["desc"] = "Specify a timezone to use for example Europe/Amsterdam"
+            project_vars["param_env_vars"].remove(row)
+    if len(project_vars["param_env_vars"]) == 0:
+        project_vars["param_usage_include_env"] = False
+
 
     if project_vars["project_logo"] == "http://www.logo.com/logo.png":
         project_vars["project_logo"] = ""
