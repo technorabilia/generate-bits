@@ -3,7 +3,7 @@
 	"version": "2",
 	"templates": [
 {% for project in projects %}
-{% set project_vars = get_project_vars(project.name) %}
+{% set project_vars = get_project_vars(project.name, init_vars, mode="templates") %}
 {% if project_vars.project_name != "name" %}
 		{
 			"type": 1,
