@@ -1,6 +1,6 @@
 {% from "common.j2" import exc_param_volumes %}
 {{ project_vars.project_blurb }}
-source ./.env
+. ./.env
 docker run -d \
   --name={{ project_vars.param_container_name }} \
 {% if project_vars.param_usage_include_hostname is sameas true %}
