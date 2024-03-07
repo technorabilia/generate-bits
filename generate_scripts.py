@@ -28,10 +28,6 @@ env = Environment(loader=FileSystemLoader(
     "templates"), trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
 env.globals.update(get_project_vars=common.get_project_vars)
 
-projects = {
-    "projects": project_list
-}
-
 out_basedir = "./lsio"
 os.makedirs(out_basedir, exist_ok=True)
 with open("{}/docker-env.cfg".format(out_basedir), "w") as out_file:
