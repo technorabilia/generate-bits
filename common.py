@@ -84,7 +84,7 @@ def get_project_vars(project_name, init_vars, mode):
         project_vars["project_logo"] = ""
 
     if "full_custom_readme" in project_vars.keys() and project_vars["full_custom_readme"] != "":
-        project_vars["project_blurb"] = "This container needs special attention. Please check https://hub.docker.com/r/linuxserver/{} for details.".format(
+        project_vars["project_blurb"] = "# This container needs special attention. Please check https://hub.docker.com/r/linuxserver/{} for details.".format(
             project_vars["project_name"])
 
     return project_vars
