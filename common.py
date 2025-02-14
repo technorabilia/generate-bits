@@ -111,7 +111,7 @@ def get_project_list():
     project_list = list(
         filter(lambda project: not project["deprecated"], project_list))
     
-    excluded_names = {"ci", "d2-builder", "jenkins-builder", "python", "readme-sync"}
+    excluded_names = {"ci", "d2-builder", "jenkins-builder", "lsio-api", "python", "readme-sync"}
     project_list = list(
         filter(lambda project: project['name'] not in excluded_names, project_list))
 
