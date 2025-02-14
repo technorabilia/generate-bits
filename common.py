@@ -91,11 +91,11 @@ def get_project_vars(project_name, init_vars, mode):
 
 
 def get_initial_variables():
-    vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/vars/common"
+    vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/ansible/vars/common.yml"
     resp = requests.get(vars_url)
     init_vars = yaml.load(resp.text, Loader=yaml.FullLoader)
 
-    vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/vars/_container-vars-blank"
+    vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/ansible/vars/_container-vars-blank"
     resp = requests.get(vars_url)
     init_vars.update(yaml.load(resp.text, Loader=yaml.FullLoader))
 
