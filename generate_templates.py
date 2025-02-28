@@ -29,25 +29,20 @@ env = Environment(loader=FileSystemLoader(
     "templates"), trim_blocks=True, lstrip_blocks=True)
 env.globals.update(init_vars=init_vars)
 env.globals.update(get_project_vars=common.get_project_vars)
-template = env.get_template("templates-2.0.j2")
+template = env.get_template("templates.j2")
 
 projects = {
     "projects": project_list
 }
 
-out_filename = "templates-2.0.json"
+out_filename = "templates.json"
 with open(out_filename, "w") as out_file:
     out_file.write(template.render(projects))
 
 # check valid json
 with open(out_filename) as in_file:
-    templates_v2 = json.load(in_file)
+    templates = json.load(in_file)
 
 # check filesize
 if os.path.getsize(out_filename) < 200000:
     raise Exception
-
-out_filename = "templates-1.20.0.json"
-templates_v1 = json.dumps(templates_v2["templates"], indent=4)
-with open(out_filename, "w") as out_file:
-    out_file.write(templates_v1)

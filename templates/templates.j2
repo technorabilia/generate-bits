@@ -1,11 +1,12 @@
 {% from "common.j2" import exc_param_volumes %}
 {
-	"version": "2",
+	"version": "3",
 	"templates": [
 	{% for project in projects %}
 		{% set project_vars = get_project_vars(project.name, init_vars, mode="templates") %}
 		{% if project_vars.project_name != "name" %}
 		{
+			"id": {{ loop.index }},
 			"type": 1,
 			"title": "{{ project_vars.project_name | capitalize }}",
 			"name": "{{ project_vars.project_name | capitalize }}",
