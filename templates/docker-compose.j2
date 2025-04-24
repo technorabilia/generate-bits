@@ -1,10 +1,9 @@
 {% from "common.j2" import exc_param_volumes %}
 {{ project_vars.project_blurb }}
 {% if not project_vars.custom_compose is defined %}---
-version: "2.1"
 services:
   {{ project_vars.project_name }}:
-    image: ghcr.io/{{ project_vars.lsio_project_name_short }}/{{ project_vars.project_name }}
+    image: lscr.io/{{ project_vars.lsio_project_name_short }}/{{ project_vars.project_name }}:latest
     container_name: {{ project_vars.project_name }}
 {% if project_vars. param_usage_include_hostname is sameas true %}
     # {{ project_vars.param_hostname_desc }}
@@ -142,4 +141,3 @@ services:
 {% endfor %}
 {% endif %}
     restart: unless-stopped{% else %}{{ project_vars.custom_compose }}{% endif %}
-
