@@ -53,24 +53,26 @@ def get_project_vars(project_name, init_vars, mode):
         for line in lines:
             project_vars["project_blurb"] += "# {}\n".format(line)
 
+    for row in project_vars["common_param_env_vars"]:
+        if row["env_var"] == "PGID":
+            row["desc"] = "Run 'id [USER]]' for the owner of the host volume directories to get the GID to use here."
+        if row["env_var"] == "PUID":
+            row["desc"] = "Run 'id [USER]]' for the owner of the host volume directories to get the UID to use here."
+
     if mode == "scripts":
         for row in project_vars["common_param_env_vars"]:
             if row["env_var"] == "PGID":
                 row["env_value"] = "${PGID:-100}"
-                row["desc"] = "for GroupID"
             if row["env_var"] == "PUID":
                 row["env_value"] = "${PUID:-1024}"
-                row["desc"] = "for UserID"
             if row["env_var"] == "TZ":
                 row["env_value"] = "${TZ:-Europe/Amsterdam}"
     elif mode == "templates":
         for row in project_vars["common_param_env_vars"]:
             if row["env_var"] == "PGID":
                 row["env_value"] = 100
-                row["desc"] = "for GroupID"
             if row["env_var"] == "PUID":
                 row["env_value"] = 1024
-                row["desc"] = "for UserID"
             if row["env_var"] == "TZ":
                 row["env_value"] = "Europe/Amsterdam"
 
