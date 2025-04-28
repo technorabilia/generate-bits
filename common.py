@@ -103,20 +103,16 @@ def get_initial_variables():
 
 
 def get_project_list():
-    image_url = "https://fleet.linuxserver.io/api/v1/images"
+    image_url = "https://api.linuxserver.io/api/v1/images"
     response = requests.get(image_url)
     response_json = response.json()
     project_list = response_json["data"]["repositories"]["linuxserver"]
 
     project_list = list(
         filter(lambda project: not project["deprecated"], project_list))
-    
-    excluded_names = {"ci", "d2-builder", "jenkins-builder", "lsio-api", "python", "readme-sync"}
-    project_list = list(
-        filter(lambda project: project['name'] not in excluded_names, project_list))
 
     # # testing
     # project_list = list(
-    #     filter(lambda project: project["name"] == "sonarr", project_list))
+    #     filter(lambda project: project["name"] == "emby", project_list))
 
     return project_list

@@ -35,9 +35,7 @@
 			{%- endif %}",
 			"description": "{{ project_vars.project_blurb }}",
 			{% if project.category %}
-			"categories": [
-				"{{ project.category }}"
-			],
+            "categories": [{% for category in project.category.split(',') %}"{{ category.strip() }}"{% if not loop.last %}, {% endif %}{% endfor %}],
 			{% endif %}
 			"platform": "linux",
 			"logo": "{{ project_vars.project_logo }}",
