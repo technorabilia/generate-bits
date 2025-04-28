@@ -10,7 +10,7 @@
 			"type": 1,
 			"title": "{{ project_vars.project_name | capitalize }}",
 			"name": "{{ project_vars.project_name | capitalize }}",
-			"note": "Portainer App Templates by <a href='https://www.technorabilia.com' target='_blank'>Technorabilia</a> based on data provided by <a href='https://www.linuxserver.io' target='_blank'>LinuxServer.io</a>.</p><p>Don't forget to create the volume directories on the host file system.</p>
+			"note": "Portainer App Templates by <a href='https://www.technorabilia.com' target='_blank'>Technorabilia</a>, based on data provided by <a href='https://www.linuxserver.io' target='_blank'>LinuxServer.io</a>.</p><p>Ensure to create the following volume directories on the host file system, or modify the paths in the volume mapping section under the advanced options below, as needed.</p>
 			{%- if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols -%}
 				<p>
 			{%- endif %}
