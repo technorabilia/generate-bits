@@ -55,9 +55,9 @@ def get_project_vars(project_name, init_vars, mode):
 
     for row in project_vars["common_param_env_vars"]:
         if row["env_var"] == "PGID":
-            row["desc"] = "Run 'id [USER]]' for the owner of the host volume directories to get the GID to use here."
+            row["desc"] = "Run 'id [USER]' for the owner of the host volume directories to get the GID to use here."
         if row["env_var"] == "PUID":
-            row["desc"] = "Run 'id [USER]]' for the owner of the host volume directories to get the UID to use here."
+            row["desc"] = "Run 'id [USER]' for the owner of the host volume directories to get the UID to use here."
 
     if mode == "scripts":
         for row in project_vars["common_param_env_vars"]:
