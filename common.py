@@ -59,29 +59,6 @@ def get_project_vars(project_name, init_vars, mode):
         if row["env_var"] == "PUID":
             row["desc"] = "Run 'id [USER]' for the owner of the host volume directories to get the UID to use here."
 
-    if mode == "scripts":
-        for row in project_vars["common_param_env_vars"]:
-            if row["env_var"] == "PGID":
-                row["env_value"] = "${PGID:-100}"
-            if row["env_var"] == "PUID":
-                row["env_value"] = "${PUID:-1024}"
-            if row["env_var"] == "TZ":
-                row["env_value"] = "${TZ:-Europe/Amsterdam}"
-    elif mode == "templates":
-        for row in project_vars["common_param_env_vars"]:
-            if row["env_var"] == "PGID":
-                row["env_value"] = 100
-            if row["env_var"] == "PUID":
-                row["env_value"] = 1024
-            if row["env_var"] == "TZ":
-                row["env_value"] = "Europe/Amsterdam"
-
-    for row in project_vars["param_env_vars"]:
-        if row["env_var"] == "TZ":
-            project_vars["param_env_vars"].remove(row)
-    if len(project_vars["param_env_vars"]) == 0:
-        project_vars["param_usage_include_env"] = False
-
     if project_vars["project_logo"] == "http://www.logo.com/logo.png":
         project_vars["project_logo"] = ""
 
@@ -97,9 +74,17 @@ def get_initial_variables():
     resp = requests.get(vars_url)
     init_vars = yaml.load(resp.text, Loader=yaml.FullLoader)
 
+    for row in init_vars["common_param_env_vars"]:
+        if row["env_var"] in ("PGID", "PUID", "TZ"):
+            row["env_value"] = f"${{{row['env_var']}:-{row['env_value']}}}"
+    
     vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/ansible/vars/_container-vars-blank"
     resp = requests.get(vars_url)
     init_vars.update(yaml.load(resp.text, Loader=yaml.FullLoader))
+
+    init_vars["param_env_vars"] = [row for row in init_vars["param_env_vars"] if row["env_var"] != "TZ"]
+    if not init_vars["param_env_vars"]:
+        init_vars["param_usage_include_env"] = False
 
     return init_vars
 
