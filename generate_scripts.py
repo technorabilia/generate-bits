@@ -30,12 +30,16 @@ env.globals.update(get_project_vars=common.get_project_vars)
 
 out_basedir = "./lsio"
 os.makedirs(out_basedir, exist_ok=True)
+
 with open("{}/docker-env.cfg".format(out_basedir), "w") as out_file:
-    out_file.write('''#BASEDIR=/volume1/docker
-#PUID=1024
-#PGID=100
-#TZ=Europe/Amsterdam
-''')
+    out_file.write('#BASEDIR=/volume1/docker\n')
+    for row in init_vars["common_param_env_vars"]:
+        if row["env_var"] in ("PGID", "PUID", "TZ"):
+            out_file.write(f"#{row['env_var']}={row['env_value']}\n")
+
+for row in init_vars["common_param_env_vars"]:
+    if row["env_var"] in ("PGID", "PUID", "TZ"):
+        row["env_value"] = f"${{{row['env_var']}:-{row['env_value']}}}"
 
 for project in project_list:
     print(project["name"])

@@ -73,10 +73,6 @@ def get_initial_variables():
     vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/ansible/vars/common.yml"
     resp = requests.get(vars_url)
     init_vars = yaml.load(resp.text, Loader=yaml.FullLoader)
-
-    for row in init_vars["common_param_env_vars"]:
-        if row["env_var"] in ("PGID", "PUID", "TZ"):
-            row["env_value"] = f"${{{row['env_var']}:-{row['env_value']}}}"
     
     vars_url = "https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/ansible/vars/_container-vars-blank"
     resp = requests.get(vars_url)
