@@ -11,7 +11,7 @@ mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_p
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
 {% if item.vol_path not in exc_param_volumes %}
-mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }} `#optional`
+mkdir -p ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }} `# [OPTIONAL]`
 {% endif %}
 {% endfor %}
 {% endif %}

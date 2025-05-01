@@ -68,7 +68,7 @@
 					"name": "{{ item.env_var }}",
 					"label": "{{ item.env_var }}",
 					"default": "{{ item.env_value | replace('"', "'") }}",
-					"description": "{{ item.desc | replace('"', "'") }} (optional)"
+					"description": "{{ item.desc | replace('"', "'") }} [OPTIONAL]"
 				}{{ "," if not loop.last or project_vars.param_usage_include_env  or project_vars.opt_param_usage_include_env else "" }}
 				{% endfor %}
 			{% endif %}
@@ -88,7 +88,7 @@
 					"name": "{{ item.env_var }}",
 					"label": "{{ item.env_var }}",
 					"default": "{{ item.env_value | replace('"', "'") }}",
-					"description": "{{ item.desc | replace('"', "'") }} (optional)"
+					"description": "{{ item.desc | replace('"', "'") }} [OPTIONAL]"
 				}{{ "," if not loop.last else "" }}
 				{% endfor %}
 			{% endif %}

@@ -6,17 +6,17 @@ docker run -d \
 {% if project_vars.param_usage_include_hostname is sameas true %}
   --hostname={{ project_vars.param_hostname }} `# {{ project_vars.param_hostname_desc }}` \
 {% elif project_vars.param_usage_include_hostname == 'optional' %}
-    --hostname={{ project_vars.param_hostname }} `# optional` `# {{ project_vars.param_hostname_desc }}` \
+    --hostname={{ project_vars.param_hostname }} `# {{ project_vars.param_hostname_desc }} [OPTIONAL]` \
 {% endif %}
 {% if project_vars.param_usage_include_net is sameas true %}
   --net={{ project_vars.param_net }} `# {{ project_vars.param_net_desc }}` \
 {% elif project_vars.param_usage_include_net == 'optional' %}
-  --net={{ project_vars.param_net }} `# optional` `# {{ project_vars.param_net_desc }}` \
+  --net={{ project_vars.param_net }} `# {{ project_vars.param_net_desc }} [OPTIONAL]` \
 {% endif %}
 {% if project_vars.privileged is sameas true %}
   --privileged \
 {% elif project_vars.privileged == 'optional' %}
-  --privileged `# optional` \
+  --privileged `# [OPTIONAL]` \
 {% endif %}
 {% if project_vars.cap_add_param %}
 {% for item in project_vars.cap_add_param_vars %}
@@ -25,7 +25,7 @@ docker run -d \
 {% endif %}
 {% if project_vars.opt_cap_add_param %}
 {% for item in project_vars.opt_cap_add_param_vars %}
-  --cap-add={{ item.cap_add_var }} `# optional` \
+  --cap-add={{ item.cap_add_var }} `# [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% if project_vars.common_param_env_vars_enabled is sameas true %}
@@ -34,7 +34,7 @@ docker run -d \
 {% endfor %}
 {% elif project_vars.common_param_env_vars_enabled == 'optional' %}
 {% for item in project_vars.common_param_env_vars %}
-  -e {{ item.env_var }}={{ item.env_value }} `# optional` `# {{ item.desc }}` \
+  -e {{ item.env_var }}={{ item.env_value }} `# {{ item.desc }} [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_env %}
@@ -44,7 +44,7 @@ docker run -d \
 {% endif %}
 {% if project_vars.opt_param_usage_include_env %}
 {% for item in project_vars.opt_param_env_vars %}
-  -e {{ item.env_var }}={{ item.env_value }} `# optional` `# {{ item.desc }}` \
+  -e {{ item.env_var }}={{ item.env_value }} `# {{ item.desc }} [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_ports %}
@@ -54,7 +54,7 @@ docker run -d \
 {% endif %}
 {% if project_vars.opt_param_usage_include_ports %}
 {% for item in project_vars.opt_param_ports %}
-  -p {{ item.external_port }}:{{ item.internal_port }} `# optional` `# {{ item.port_desc }}` \
+  -p {{ item.external_port }}:{{ item.internal_port }} `# {{ item.port_desc }} [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_vols %}
@@ -69,9 +69,9 @@ docker run -d \
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
 {% if item.vol_path in exc_param_volumes %}
-  -v {{ item.vol_path }}:{{ item.vol_path }} `# optional` `# {{ item.desc }}` \
+  -v {{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }} [OPTIONAL]` \
 {% else %}
-  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# optional` `# {{ item.desc }}` \
+  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }} [OPTIONAL]` \
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -82,7 +82,7 @@ docker run -d \
 {% endif %}
 {% if project_vars.opt_param_device_map %}
 {% for item in project_vars.opt_param_devices %}
-  --device {{ item.device_host_path }}:{{ item.device_path }} `# optional` `# {{ item.desc }}` \
+  --device {{ item.device_host_path }}:{{ item.device_path }} `# {{ item.desc }} [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% if project_vars.custom_params is defined %}
@@ -99,10 +99,10 @@ docker run -d \
 {% if project_vars.opt_custom_params is defined %}
 {% for item in project_vars.opt_custom_params %}
 {% if item.array is not defined %}
-  --{{ item.name }}="{{ item.value }}" `# optional` \
+  --{{ item.name }}="{{ item.value }}" `# [OPTIONAL]` \
 {% else %}
 {% for item2 in item.value %}
-  --{{ item.name }}="{{ item2 }}" `# optional` \
+  --{{ item.name }}="{{ item2 }}" `# [OPTIONAL]` \
 {% endfor %}
 {% endif %}
 {% endfor %}

@@ -9,8 +9,8 @@ services:
     # {{ project_vars.param_hostname_desc }}
     hostname: {{ project_vars.param_hostname }}
 {% elif project_vars.param_usage_include_hostname == 'optional' %}
-    # {{ project_vars.param_hostname_desc }}
-    hostname: {{ project_vars.param_hostname }} # optional
+    # {{ project_vars.param_hostname_desc }} [OPTIONAL]
+    hostname: {{ project_vars.param_hostname }}
 {% endif %}
 {% if project_vars.privileged is sameas true %}
     privileged: true
@@ -33,7 +33,7 @@ services:
 {% if project_vars.param_usage_include_net is sameas true %}
     network_mode: {{ project_vars.param_net }}
 {% elif project_vars.param_usage_include_net == 'optional' %}
-    network_mode: {{ project_vars.param_net }} # optional
+    network_mode: {{ project_vars.param_net }} # [OPTIONAL]
 {% endif %}
 {% if project_vars.common_param_env_vars_enabled or project_vars.param_usage_include_env or project_vars.opt_param_usage_include_env %}
     environment:
@@ -45,8 +45,8 @@ services:
 {% endfor %}
 {% elif project_vars.common_param_env_vars_enabled == 'optional' %}
 {% for item in project_vars.common_param_env_vars %}
-      # {{ item.desc }}
-      - {{ item.env_var }}={{ item.env_value }} # optional
+      # {{ item.desc }} [OPTIONAL]
+      - {{ item.env_var }}={{ item.env_value }}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_env %}
@@ -57,8 +57,8 @@ services:
 {% endif %}
 {% if project_vars.opt_param_usage_include_env %}
 {% for item in project_vars.opt_param_env_vars %}
-      # {{ item.desc }}
-      - {{ item.env_var }}={{ item.env_value }} # optional
+      # {{ item.desc }} [OPTIONAL]
+      - {{ item.env_var }}={{ item.env_value }}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_usage_include_vols or project_vars.opt_param_usage_include_vols %}
@@ -78,11 +78,11 @@ services:
 {% if project_vars.opt_param_usage_include_vols %}
 {% for item in project_vars.opt_param_volumes %}
 {% if item.vol_path in exc_param_volumes %}
-      # {{ item.desc }}
-      - {{ item.vol_path }}:{{ item.vol_path }} # optional
+      # {{ item.desc }} [OPTIONAL]
+      - {{ item.vol_path }}:{{ item.vol_path }}
 {% else %}
-      # {{ item.desc }}
-      - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} # optional
+      # {{ item.desc }} [OPTIONAL]
+      - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -97,8 +97,8 @@ services:
 {% endif %}
 {% if project_vars.opt_param_usage_include_ports %}
 {% for item in project_vars.opt_param_ports %}
-      # {{ item.port_desc }}
-      - {{ item.external_port }}:{{ item.internal_port }} # optional
+      # {{ item.port_desc }} [OPTIONAL]
+      - {{ item.external_port }}:{{ item.internal_port }}
 {% endfor %}
 {% endif %}
 {% if project_vars.param_device_map or project_vars.opt_param_device_map %}
@@ -112,8 +112,8 @@ services:
 {% endif %}
 {% if project_vars.opt_param_device_map %}
 {% for item in project_vars.opt_param_devices %}
-      # {{ item.desc }}
-      - {{ item.device_host_path }}:{{ item.device_path }} # optional
+      # {{ item.desc }} [OPTIONAL]
+      - {{ item.device_host_path }}:{{ item.device_path }}
 {% endfor %}
 {% endif %}
 {% if project_vars.custom_params is defined %}
@@ -131,11 +131,11 @@ services:
 {% if project_vars.opt_custom_params is defined %}
 {% for item in project_vars.opt_custom_params %}
 {% if item.array is not defined %}
-    {{ item.name_compose }}: "{{ item.value }}" # optional
+    {{ item.name_compose }}: "{{ item.value }}" # [OPTIONAL]
 {% else %}
-    {{ item.name_compose }}: # optional
+    {{ item.name_compose }}: # [OPTIONAL]
 {% for item2 in item.value %}
-      - {{ item2 }} # optional
+      - {{ item2 }} # [OPTIONAL]
 {% endfor %}
 {% endif %}
 {% endfor %}
