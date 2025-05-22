@@ -28,6 +28,10 @@ def get_project_vars(project_name, init_vars, mode):
     response = requests.get(vars_url)
     project_vars.update(yaml.load(response.text, Loader=yaml.FullLoader))
 
+    project_vars["param_env_vars"] = [row for row in project_vars["param_env_vars"] if row["env_var"] != "TZ"]
+    if not project_vars["param_env_vars"]:
+        project_vars["param_usage_include_env"] = False
+
     # overrides
     if mode == "scripts":
         project_vars["param_container_name"] = project_vars["param_container_name"].replace(
