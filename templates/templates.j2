@@ -17,7 +17,7 @@
 			{%- if project_vars.param_usage_include_vols %}
 				{%- for item in project_vars.param_volumes %}
 					{%- if item.vol_path not in exc_param_volumes -%}
-						mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+						mkdir -p /srv/lsio/{{ project_vars.project_name}}{{ item.vol_path }}
 					{%- endif -%}
 					{{ "<br>" if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
 				{%- endfor %}
@@ -25,7 +25,7 @@
 			{%- if project_vars.opt_param_usage_include_vols %}
 				{%- for item in project_vars.opt_param_volumes %}
 					{%- if item.vol_path not in exc_param_volumes -%}
-						mkdir -p /volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}
+						mkdir -p /srv/lsio/{{ project_vars.project_name}}{{ item.vol_path }}
 					{%- endif -%}
 					{{ "<br>" if not loop.last else "" }}
 				{%- endfor %}
@@ -121,7 +121,7 @@
 				{% if item.vol_path in exc_param_volumes %}
 				"bind": "{{ item.vol_path }}"
 				{% else %}
-				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+				"bind": "/srv/lsio/{{ project_vars.project_name}}{{ item.vol_path }}"
 				{% endif %}
 			}{{ "," if not loop.last or project_vars.opt_param_usage_include_vols else "" }}
 				{% endfor %}
@@ -133,7 +133,7 @@
 				{% if item.vol_path in exc_param_volumes  %}
 				"bind": "{{ item.vol_path }}"
 				{% else %}
-				"bind": "/volume1/docker/{{ project_vars.project_name}}{{ item.vol_path }}"
+				"bind": "/srv/lsio/{{ project_vars.project_name}}{{ item.vol_path }}"
 				{% endif %}
 			}{{ "," if not loop.last else "" }}
 				{% endfor %}

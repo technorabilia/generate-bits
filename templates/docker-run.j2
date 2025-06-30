@@ -62,7 +62,7 @@ docker run -d \
 {% if item.vol_path in exc_param_volumes %}
   -v {{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
 {% else %}
-  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
+  -v ${BASEDIR:-/srv/lsio}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }}` \
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -71,7 +71,7 @@ docker run -d \
 {% if item.vol_path in exc_param_volumes %}
   -v {{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }} [OPTIONAL]` \
 {% else %}
-  -v ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }} [OPTIONAL]` \
+  -v ${BASEDIR:-/srv/lsio}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }} `# {{ item.desc }} [OPTIONAL]` \
 {% endif %}
 {% endfor %}
 {% endif %}

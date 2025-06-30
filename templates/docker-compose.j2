@@ -71,7 +71,7 @@ services:
       - {{ item.vol_path }}:{{ item.vol_path }}
 {% else %}
       # {{ item.desc }}
-      - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
+      - ${BASEDIR:-/srv/lsio}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -82,7 +82,7 @@ services:
       - {{ item.vol_path }}:{{ item.vol_path }}
 {% else %}
       # {{ item.desc }} [OPTIONAL]
-      - ${BASEDIR:-/volume1/docker}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
+      - ${BASEDIR:-/srv/lsio}/{{ project_vars.project_name}}{{ item.vol_path }}:{{ item.vol_path }}
 {% endif %}
 {% endfor %}
 {% endif %}

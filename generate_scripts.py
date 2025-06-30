@@ -32,7 +32,7 @@ out_basedir = "./lsio"
 os.makedirs(out_basedir, exist_ok=True)
 
 with open("{}/docker-env.cfg".format(out_basedir), "w") as out_file:
-    out_file.write('#BASEDIR=/volume1/docker\n')
+    out_file.write('#BASEDIR=/srv/lsio\n')
     for row in init_vars["common_param_env_vars"]:
         if row["env_var"] in ("PGID", "PUID", "TZ"):
             out_file.write(f"#{row['env_var']}={row['env_value']}\n")
