@@ -21,7 +21,6 @@ import json
 import re
 
 import common
-import render
 
 DOCKER_BITS_RAW_URL = "https://raw.githubusercontent.com/technorabilia/docker-bits/refs/heads/main/lsio"
 DOCKER_BITS_TREE_URL = "https://github.com/technorabilia/docker-bits/tree/main/lsio"
