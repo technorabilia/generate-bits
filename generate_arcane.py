@@ -20,6 +20,8 @@ import hashlib
 import json
 import re
 
+from jinja2 import Environment, FileSystemLoader
+
 import common
 
 DOCKER_BITS_RAW_URL = "https://raw.githubusercontent.com/technorabilia/docker-bits/refs/heads/main/lsio"
@@ -77,6 +79,10 @@ def slugify(project_name):
 init_vars = common.get_initial_variables()
 project_list = common.get_project_list()
 
+env = Environment(loader=FileSystemLoader(
+    "templates"), trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
+compose_template = env.get_template("docker-compose.j2")
+
 templates = []
 
 for project in project_list:
@@ -89,10 +95,10 @@ for project in project_list:
 
     project_name = project_vars["project_name"].lower()
 
-    # render_docker_compose renders identically to what generate_scripts.py
-    # writes to lsio/<project>/docker-compose.yaml, so hashing it here
-    # matches the file that ends up published to docker-bits.
-    compose_content = render.render_docker_compose(project_vars)
+    # docker-compose.j2 renders identically to what generate_scripts.py writes
+    # to lsio/<project>/docker-compose.yaml, so hashing it here matches the
+    # file that ends up published to docker-bits.
+    compose_content = compose_template.render(project_vars=project_vars)
     content_hash = hashlib.sha256(compose_content.encode("utf-8")).hexdigest()
 
     # mode="scripts" wraps the blurb as "# "-prefixed comment lines; unwrap
