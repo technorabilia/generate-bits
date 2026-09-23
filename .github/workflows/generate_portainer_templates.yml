@@ -1,4 +1,4 @@
-name: Generate arcane templates
+name: Generate Portainer templates
 
 on:
   workflow_dispatch:
@@ -37,15 +37,15 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Execute Python script
       run: |
-        python generate_arcane.py
+        python generate_portainer_templates.py
     - name: Pushes templates.json to destination repository
       uses: dmnemec/copy_file_to_another_repo_action@c93037aa10fa8893de271f19978c980d0c1a9b37 # v1.1.1
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source_file: 'templates.json'
-        destination_repo: 'technorabilia/arcane-templates'
+        destination_repo: 'technorabilia/portainer-templates'
         destination_folder: 'lsio/templates'
         user_email: 'simon@technorabilia.com'
         user_name: 'technorabilia'
-        commit_message: 'Workflow update'
+        commit_message: 'Sync Portainer templates from LinuxServer.io metadata (generate-bits run ${{ github.run_id }})'
