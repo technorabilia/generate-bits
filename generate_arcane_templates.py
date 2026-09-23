@@ -95,7 +95,7 @@ for project in project_list:
 
     project_name = project_vars["project_name"].lower()
 
-    # docker-compose.j2 renders identically to what generate_scripts.py writes
+    # docker-compose.j2 renders identically to what generate_docker_bits.py writes
     # to lsio/<project>/docker-compose.yaml, so hashing it here matches the
     # file that ends up published to docker-bits.
     compose_content = compose_template.render(project_vars=project_vars)
