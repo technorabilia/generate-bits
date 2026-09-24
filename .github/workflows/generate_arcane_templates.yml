@@ -38,14 +38,27 @@ jobs:
     - name: Execute Python script
       run: |
         python generate_arcane_templates.py
-    - name: Pushes templates.json to destination repository
-      uses: dmnemec/copy_file_to_another_repo_action@c93037aa10fa8893de271f19978c980d0c1a9b37 # v1.1.1
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+    - name: Checkout destination repository
+      uses: actions/checkout@v7
       with:
-        source_file: 'templates.json'
-        destination_repo: 'technorabilia/arcane-templates'
-        destination_folder: 'lsio/templates'
-        user_email: 'simon@technorabilia.com'
-        user_name: 'technorabilia'
-        commit_message: 'Sync Arcane templates from LinuxServer.io metadata (generate-bits run ${{ github.run_id }})'
+        repository: technorabilia/arcane-templates
+        token: ${{ secrets.API_TOKEN_GITHUB }}
+        path: arcane-templates
+
+    - name: Copy templates.json into destination repository
+      run: |
+        mkdir -p arcane-templates/lsio/templates
+        cp templates.json arcane-templates/lsio/templates/templates.json
+
+    - name: Commit and push if changed
+      working-directory: arcane-templates
+      run: |
+        git config user.name 'technorabilia'
+        git config user.email 'simon@technorabilia.com'
+        git add lsio/templates/templates.json
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        git commit -m 'Sync Arcane templates from LinuxServer.io metadata (generate-bits run ${{ github.run_id }})'
+        git push

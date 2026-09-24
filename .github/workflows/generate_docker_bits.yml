@@ -38,15 +38,29 @@ jobs:
     - name: Execute Python script
       run: |
         python generate_docker_bits.py
-    - name: Pushes output to destination repository
-      uses: crykn/copy_folder_to_another_repo_action@0282e8b9fef06de92ddcae9fe6cb44df6226646c # v1.0.6
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+    - name: Checkout destination repository
+      uses: actions/checkout@v7
       with:
-        source_folder: 'lsio'
-        destination_repo: 'technorabilia/docker-bits'
-        destination_folder: 'lsio'
-        user_email: 'simon@technorabilia.com'
-        user_name: 'technorabilia'
-        destination_branch: 'main'
-        commit_msg: 'Sync docker-bits scripts from LinuxServer.io metadata (generate-bits run ${{ github.run_id }})'
+        repository: technorabilia/docker-bits
+        ref: main
+        token: ${{ secrets.API_TOKEN_GITHUB }}
+        path: docker-bits
+
+    - name: Copy generated scripts into destination repository
+      run: |
+        rm -rf docker-bits/lsio
+        mkdir -p docker-bits/lsio
+        cp -r lsio/. docker-bits/lsio/
+
+    - name: Commit and push if changed
+      working-directory: docker-bits
+      run: |
+        git config user.name 'technorabilia'
+        git config user.email 'simon@technorabilia.com'
+        git add lsio
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        git commit -m 'Sync docker-bits scripts from LinuxServer.io metadata (generate-bits run ${{ github.run_id }})'
+        git push
